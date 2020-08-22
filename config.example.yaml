@@ -1,8 +1,8 @@
 archivebox:
     # method :docker-compose, python.
     method: docker-compose
-    # path containing archivebox data.
-    path: ./data
+    # path containing archivebox data. When using docker-compose method, must be the path of the docker-compose file (the path will be the one in the .env file).
+    path: ./
     # environment variables to be used when running archivebox (see archivebox docs).
     environment:
         - USE_COLOR=True

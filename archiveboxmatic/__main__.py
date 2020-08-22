@@ -110,7 +110,7 @@ def main():
         if archive.schedule in allowed_schedules:
             for j in archive.construct_commands():
                 logger.info(f"Raw command : {j}")
-                # run_command(j)
+                run_command(j)
 
     logger.info("Runtime : %.2f seconds." % (time.time() - start_time))
 

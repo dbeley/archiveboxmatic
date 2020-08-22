@@ -5,9 +5,9 @@ Description=archiveboxmatic_daily.service
 Type=oneshot
 WorkingDirectory=%h/Documents/archiveboxmatic
 # Pipenv Installation
-ExecStart=.venv/bin/archiveboxmatic -s daily
+# ExecStart=.venv/bin/archiveboxmatic -s daily
 # Classic Installation
-# ExecStart=archiveboxmatic -s daily
+ExecStart=python3 archiveboxmatic -s daily
 
 [Install]
 WantedBy=multi-user.target

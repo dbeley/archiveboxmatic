@@ -3,3 +3,7 @@ tags
 *.txt
 *.egg-info
 build/
+dist/
+__pycache__/
+.env
+config.yaml

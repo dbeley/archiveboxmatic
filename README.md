@@ -4,13 +4,7 @@
 
 ArchiveBoxMatic lets you configure ArchiveBox archives in a yaml file.
 
-## Requirements
-
-- archivebox
-- docker
-- docker-compose
-
-## ArchiveBoxMatic Installation
+## Installation
 
 ```
 git clone https://github.com/beley/archiveboxmatic
@@ -33,6 +27,7 @@ pipenv install '-e .'
 ```
 pip install archivebox
 mkdir data
+cd data
 archivebox init
 archivebox manage createsuperuser
 cd ..
@@ -44,17 +39,15 @@ Use `python` method in your config file.
 
 For an archivebox data folder named data and placed in the repo folder, create a file named `.env` containing this content
 ```
-DATA_FOLDER=./data
+DATA_FOLDER=~/data_folder
 ```
 
 You can then initiate an archivebox archive with the following commands
 
 ```
-mkdir data
-cd data
+docker-compose pull archivebox
 docker-compose run archivebox init
 docker-compose run archivebox manage createsuperuser
-cd ..
 docker-compose up -d
 ```
 
@@ -183,3 +176,10 @@ systemctl --user list-timers --all
 ```
 systemctl --user start archiveboxmatic_all.service
 ```
+
+By default the schedule are the following (you can change it in the OnCalendar option in the systemd timer files).
+
+- daily : every day at 12am
+- weekly : every monday at 10am
+- monthly : every first day of the month at 5am
+- yearly : every first day of the year at 1am
