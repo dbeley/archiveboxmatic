@@ -1,0 +1,5 @@
+config_test.yaml
+tags
+*.txt
+*.egg-info
+build/

@@ -1,0 +1,10 @@
+[Unit]
+Description=archiveboxmatic_weekly.timer
+
+[Timer]
+# OnCalendar=weekly
+OnCalendar=Mon *-*-* 10:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

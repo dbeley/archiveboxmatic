@@ -1,0 +1,10 @@
+[Unit]
+Description=archiveboxmatic_monthly.timer
+
+[Timer]
+# OnCalendar=monthly
+OnCalendar=*-*-01 05:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
