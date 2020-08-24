@@ -6,10 +6,12 @@ import time
 import argparse
 from yaml import load, Loader
 import subprocess
+import datetime
 
 
 logger = logging.getLogger()
 start_time = time.time()
+timestamp = int(time.time())
 
 
 class ArchiveboxmaticArchive:
@@ -40,23 +42,23 @@ class ArchiveboxmaticArchive:
         # text_files
         if "text_files" in self.sources:
             for i in self.sources["text_files"]:
-                yield f"{self.environment} cd {self.path} && cat {i} | {self.archivebox_command}'"
+                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo$(line)#{timestamp} | {self.archivebox_command}'"
         # shaarli
         if "shaarli" in self.sources:
             for i in self.sources["shaarli"]:
-                yield f"{self.environment} cd {self.path} && cat {i} | {self.archivebox_command}'"
+                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo$(line)#{timestamp} | {self.archivebox_command}'"
         # reddit_saved
         if "reddit_saved" in self.sources:
             for i in self.sources["reddit_saved"]:
-                yield f"{self.environment} cd {self.path} && cat {i} | {self.archivebox_command}'"
+                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo$(line)#{timestamp} | {self.archivebox_command}'"
         # firefox_bookmarks
         if "firefox_bookmarks" in self.sources:
             for i in self.sources["firefox_bookmarks"]:
-                yield f"{self.environment} cd {self.path} && cat {i} | {self.archivebox_command}'"
+                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo$(line)#{timestamp} | {self.archivebox_command}'"
         # firefox_history
         if "firefox_history" in self.sources:
             for i in self.sources["firefox_history"]:
-                yield f"{self.environment} cd {self.path} && cat {i} | {self.archivebox_command}'"
+                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo$(line)#{timestamp} | {self.archivebox_command}'"
 
 
 def run_command(command):
