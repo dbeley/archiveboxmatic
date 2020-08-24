@@ -24,6 +24,7 @@ class ArchiveboxmaticArchive:
         self.sources = archive["sources"]
         self.path = config["archivebox"]["path"]
         self.archivebox_command = self.construct_archivebox_command(config, archive)
+        self.identifier = f"{timestamp}" if not "schedule" in archive else f"{archive['schedule']}-{timestamp}"
 
     def construct_archivebox_command(self, config, archive):
         default_command = f"archivebox add --depth={archive['depth']}"
@@ -42,23 +43,23 @@ class ArchiveboxmaticArchive:
         # text_files
         if "text_files" in self.sources:
             for i in self.sources["text_files"]:
-                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo ${{line}}#{timestamp}; done | {self.archivebox_command}'"
+                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo ${{line}}#{self.identifier}; done | {self.archivebox_command}'"
         # shaarli
         if "shaarli" in self.sources:
-            for i in self.sources["shaarli"]:
-                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo ${{line}}#{timestamp}; done | {self.archivebox_command}'"
+            # for i in self.sources["shaarli"]:
+            logger.info("Shaarli not implemented yet.")
         # reddit_saved
         if "reddit_saved" in self.sources:
-            for i in self.sources["reddit_saved"]:
-                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo ${{line}}#{timestamp}; done | {self.archivebox_command}'"
+            # for i in self.sources["reddit_saved"]:
+            logger.info("Saved reddit posts not implemented yet.")
         # firefox_bookmarks
         if "firefox_bookmarks" in self.sources:
-            for i in self.sources["firefox_bookmarks"]:
-                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo ${{line}}#{timestamp}; done | {self.archivebox_command}'"
+            # for i in self.sources["firefox_bookmarks"]:
+            logger.info("Firefox Bookmarks not implemented yet.")
         # firefox_history
         if "firefox_history" in self.sources:
-            for i in self.sources["firefox_history"]:
-                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo ${{line}}#{timestamp}; done | {self.archivebox_command}'"
+            # for i in self.sources["firefox_history"]:
+            logger.info("Firefox History not implemented yet.")
 
 
 def run_command(command):

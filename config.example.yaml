@@ -9,6 +9,7 @@ archivebox:
         - SHOW_PROGRESS=False
         - TIMEOUT=120
         - MEDIA_TIMEOUT=300
+        - ONLY_NEW=True
 configuration:
     timezone: Europe/Paris
 archives:

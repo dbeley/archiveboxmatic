@@ -15,6 +15,7 @@ services:
       - SHOW_PROGRESS=False
       - TIMEOUT=120
       - MEDIA_TIMEOUT=300
+      - ONLY_NEW=True
     volumes:
       - $DATA_FOLDER:/data
     ports:
