@@ -42,23 +42,23 @@ class ArchiveboxmaticArchive:
         # text_files
         if "text_files" in self.sources:
             for i in self.sources["text_files"]:
-                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo$(line)#{timestamp} | {self.archivebox_command}'"
+                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo ${{line}}#{timestamp}; done | {self.archivebox_command}'"
         # shaarli
         if "shaarli" in self.sources:
             for i in self.sources["shaarli"]:
-                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo$(line)#{timestamp} | {self.archivebox_command}'"
+                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo ${{line}}#{timestamp}; done | {self.archivebox_command}'"
         # reddit_saved
         if "reddit_saved" in self.sources:
             for i in self.sources["reddit_saved"]:
-                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo$(line)#{timestamp} | {self.archivebox_command}'"
+                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo ${{line}}#{timestamp}; done | {self.archivebox_command}'"
         # firefox_bookmarks
         if "firefox_bookmarks" in self.sources:
             for i in self.sources["firefox_bookmarks"]:
-                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo$(line)#{timestamp} | {self.archivebox_command}'"
+                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo ${{line}}#{timestamp}; done | {self.archivebox_command}'"
         # firefox_history
         if "firefox_history" in self.sources:
             for i in self.sources["firefox_history"]:
-                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo$(line)#{timestamp} | {self.archivebox_command}'"
+                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo ${{line}}#{timestamp}; done | {self.archivebox_command}'"
 
 
 def run_command(command):
@@ -96,9 +96,9 @@ def main():
 
     for i in config["archives"]:
         archive = ArchiveboxmaticArchive(config, i)
-        logger.info(f"###### Processing archive {archive.name}")
 
         if archive.schedule in allowed_schedules:
+            logger.info(f"###### Processing archive {archive.name}")
             for j in archive.construct_commands():
                 logger.info(f"Raw command : {j}")
                 if not args.dry_run:
@@ -132,7 +132,7 @@ def parse_args():
         type=str,
         default="all"
     )
-    parser.add_argument("--dry_run", help="Run the script without starting the archive process. Can be used to validate the config file.", dest="dry_run", action="store_true")
+    parser.add_argument("--dry-run", help="Run the script without starting the archive process. Can be used to validate the config file.", dest="dry_run", action="store_true")
     parser.set_defaults(dry_run=False)
     args = parser.parse_args()
 
