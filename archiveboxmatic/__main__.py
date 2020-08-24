@@ -67,7 +67,6 @@ def run_command(command):
         stdout=subprocess.PIPE,
         shell=True,
         text=True,
-        # executable="/bin/bash",
     )
     output, error = process.communicate()
 
@@ -93,16 +92,6 @@ def main():
     if not validate_config(config, args):
         raise Exception("Config is not valid.")
 
-    # with open("ArchiveboxMatic.sh", "w") as f:
-    #     f.write("#!/usr/bin/env bash\n")
-    #     for i in config["archives"]:
-    #         archive = ArchiveboxmaticArchive(config, i)
-    #         logger.debug(f"###### Processing archive {archive.name}")
-
-    #         for j in archive.construct_commands():
-    #             # logger.debug(j)
-    #             # run_command(j)
-    #             f.write(f"{j}\n")
     allowed_schedules = [args.schedule] if args.schedule != "all" else ["daily","weekly","monthly","yearly","none"]
 
     for i in config["archives"]:
@@ -112,7 +101,8 @@ def main():
         if archive.schedule in allowed_schedules:
             for j in archive.construct_commands():
                 logger.info(f"Raw command : {j}")
-                run_command(j)
+                if not args.dry_run:
+                    run_command(j)
 
     logger.info("Runtime : %.2f seconds." % (time.time() - start_time))
 
@@ -142,7 +132,8 @@ def parse_args():
         type=str,
         default="all"
     )
-    parser.set_defaults(boolean_flag=False)
+    parser.add_argument("--dry_run", help="Run the script without starting the archive process. Can be used to validate the config file.", dest="dry_run", action="store_true")
+    parser.set_defaults(dry_run=False)
     args = parser.parse_args()
 
     logging.basicConfig(level=args.loglevel, format=format)
