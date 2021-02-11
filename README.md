@@ -159,25 +159,16 @@ optional arguments:
 
 ## Schedule
 
-Periodic runs can be set up with the help of systemd timers.
-
-You might have to change the contents of systemd services in the systemd-service folder (specially the WorkingDirectory option and the ExecStart command, if you used pipenv for installing for example).
+archiveboxmatic comes with a systemd-service file which allows it to run in the background.
 
 ```
 cp systemd-service/* ~/.config/systemd/user
 systemctl --user daemon-reload
-systemctl --user enable --now archiveboxmatic_daily.timer
-systemctl --user enable --now archiveboxmatic_weekly.timer
-systemctl --user enable --now archiveboxmatic_monthly.timer
-systemctl --user enable --now archiveboxmatic_yearly.timer
-systemctl --user list-timers --all
+systemctl --user enable --now archiveboxmatic
+systemctl --user status archiveboxmatic
 ```
 
-```
-systemctl --user start archiveboxmatic_all.service
-```
-
-By default the schedule are the following (you can change it in the OnCalendar option in the systemd timer files).
+By default the schedule are the following (you can change it in the code).
 
 - daily : every day at 12am
 - weekly : every monday at 10am

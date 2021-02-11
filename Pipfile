@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 youtube-dl = {editable = true, path = "."}
 archiveboxmatic = {editable = true, path = "."}
+schedule = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"
