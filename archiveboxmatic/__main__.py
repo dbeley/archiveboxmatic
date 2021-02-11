@@ -63,7 +63,7 @@ def main():
     while True:
         schedule.run_pending()
         time.sleep(60)
-        logger.debug(f"Next job in {schedule.next_run() - datetime.datetime.now()}.")
+        logger.debug(f"Next job: {schedule.next_run() - datetime.datetime.now()}.")
 
 
 def parse_args():

@@ -161,6 +161,8 @@ optional arguments:
 
 archiveboxmatic comes with a systemd-service file which allows it to run in the background.
 
+You will have to change the WorkingDirectory option in the systemd file to the directory containing archiveboxmatic.
+
 ```
 cp systemd-service/* ~/.config/systemd/user
 systemctl --user daemon-reload
