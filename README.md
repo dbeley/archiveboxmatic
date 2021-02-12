@@ -7,7 +7,7 @@ ArchiveBoxMatic lets you configure ArchiveBox archives in a yaml file.
 ## Installation
 
 ```
-git clone https://github.com/beley/archiveboxmatic
+git clone https://github.com/dbeley/archiveboxmatic
 cd archiveboxmatic
 python install setup.py
 ```
@@ -15,7 +15,7 @@ python install setup.py
 You can also use pipenv to install your virtual environment
 
 ```
-git clone https://github.com/beley/archiveboxmatic
+git clone https://github.com/dbeley/archiveboxmatic
 cd archiveboxmatic
 pipenv install '-e .'
 ```

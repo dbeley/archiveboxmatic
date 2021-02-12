@@ -14,7 +14,7 @@ def job(args, archive):
 
 
 def job_monthly(args, archive):
-    if datetime.now().day == 1:
+    if datetime.datetime.now().day == 1:
         logger.info(f"###### Processing archive {archive.name}")
         for i in archive.construct_commands():
             logger.info(f"Raw command : {i}")
@@ -23,7 +23,7 @@ def job_monthly(args, archive):
 
 
 def job_yearly(args, archive):
-    if datetime.now().day == 1 and datetime.now().month == 1:
+    if datetime.datetime.now().day == 1 and datetime.datetime.now().month == 1:
         logger.info(f"###### Processing archive {archive.name}")
         for i in archive.construct_commands():
             logger.info(f"Raw command : {i}")

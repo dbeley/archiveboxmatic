@@ -62,7 +62,7 @@ def main():
 
     while True:
         schedule.run_pending()
-        time.sleep(60)
+        time.sleep(600)
         logger.debug(f"Next job: {schedule.next_run() - datetime.datetime.now()}.")
 
 
