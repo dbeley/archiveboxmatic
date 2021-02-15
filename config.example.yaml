@@ -2,7 +2,8 @@ archivebox:
     # method :docker-compose, python.
     method: docker-compose
     # path containing archivebox data. When using docker-compose method, must be the path of the docker-compose file (the path will be the one in the .env file).
-    path: ./
+    # /!\ Path must be absolute, not relative
+    path: ~/Documents/archivebox
     # environment variables to be used when running archivebox (see archivebox docs).
     environment:
         - USE_COLOR=True
@@ -16,6 +17,7 @@ archives:
     # - name: name of the archive
     #   depth: depth of archive (0 or 1).
     #   sources: files containing urls.
+    #   /!\ Path must be absolute, not relative
     #       text_files: files containing one urls by line.
     #       shaarli: html files exported by shaarli.
     #       reddit_saved: files containing one urls by line (same as text_files).
@@ -26,55 +28,55 @@ archives:
       depth: 0
       sources:
           text_files:
-              - text1.txt
-              - text2.txt
+              - ~/Documents/archiveboxmatic/text1.txt
+              - ~/Documents/archiveboxmatic/text2.txt
           shaarli:
-              - shaarli.html
+              - ~/Documents/archiveboxmatic/shaarli.html
           reddit_saved:
-              - reddit_saved.html
+              - ~/Documents/archiveboxmatic/reddit_saved.html
           firefox_bookmarks:
-              - firefox_bookmarks.html
+              - ~/Documents/archiveboxmatic/firefox_bookmarks.html
           firefox_history:
-              - firefox_history.html
+              - ~/Documents/archiveboxmatic/firefox_history.html
     - name: daily
       depth: 0
       sources:
           text_files:
-              - URLs/daily.txt
+              - ~/Documents/archiveboxmatic/URLs/daily.txt
       schedule: daily
     - name: weekly
       depth: 0
       sources:
           text_files:
-              - URLs/weekly.txt
+              - ~/Documents/archiveboxmatic/URLs/weekly.txt
       schedule: weekly
     - name: monthly
       depth: 0
       sources:
           text_files:
-              - URLs/monthly.txt
+              - ~/Documents/archiveboxmatic/URLs/monthly.txt
       schedule: monthly
     - name: yearly
       depth: 0
       sources:
           text_files:
-              - URLs/yearly.txt
+              - ~/Documents/archiveboxmatic/URLs/yearly.txt
       schedule: yearly
     - name: shaarli
       depth: 0
       sources:
           shaarli_files:
-              - bookmarks_shaarli.html
+              - ~/Documents/archiveboxmatic/bookmarks_shaarli.html
     - name: reddit-saved
       depth: 0
       sources:
           reddit_saved:
-              - reddit_saved_user1.txt
-              - reddit_saved_user2.txt
+              - ~/Documents/archiveboxmatic/reddit_saved_user1.txt
+              - ~/Documents/archiveboxmatic/reddit_saved_user2.txt
     - name: firefox
       depth: 0
       sources:
           firefox_bookmarks:
-              - bookmarks_firefox.html
+              - ~/Documents/archiveboxmatic/bookmarks_firefox.html
           firefox_history:
-                - history_firefox.html
+              - ~/Documents/archiveboxmatic/history_firefox.html
