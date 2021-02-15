@@ -41,24 +41,34 @@ def main():
         else ["daily", "weekly", "monthly", "yearly", "none"]
     )
 
+    path = config["archivebox"]["path"]
+    method = config["archivebox"]["method"]
     for i in config["archives"]:
-        archive = ArchiveboxmaticArchive(config, i)
+        # WIP:
+        # archive objects are created here to activate every schedule
+        # they are instanciated a second time in the job functions
+        # in order to update the timestamp
+        archive = ArchiveboxmaticArchive(path, method, i)
 
         if archive.schedule in allowed_schedules:
             if archive.schedule == "daily":
-                schedule.every().day.at("12:00").do(job, args=args, archive=archive)
+                schedule.every().day.at("12:00").do(
+                    job, args=args, path=path, method=method, i=i
+                )
             if archive.schedule == "weekly":
-                schedule.every().monday.at("10:00").do(job, args=args, archive=archive)
+                schedule.every().monday.at("10:00").do(
+                    job, args=args, path=path, method=method, i=i
+                )
             if archive.schedule == "monthly":
                 schedule.every().day.at("05:00").do(
-                    job_monthly, args=args, archive=archive
+                    job_monthly, args=args, path=path, method=method, i=i
                 )
             if archive.schedule == "yearly":
                 schedule.every().day.at("01:00").do(
-                    job_yearly, args=args, archive=archive
+                    job_yearly, args=args, path=path, method=method, i=i
                 )
             if archive.schedule == "none":
-                job(args, archive)
+                job(args, path, method, i)
 
     while True:
         schedule.run_pending()

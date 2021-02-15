@@ -5,32 +5,31 @@ logger = logging.getLogger(__name__)
 
 
 class ArchiveboxmaticArchive:
-    def __init__(self, config, archive):
+    def __init__(self, path, method, archive):
         timestamp = int(time.time())
         self.name = archive["name"]
         self.is_schedule = True if "schedule" in archive else False
         self.schedule = archive["schedule"] if "schedule" in archive else "none"
         self.environment = f"{' '.join(config['archivebox']['environment'])} bash -c '"
-        self.path = config["archivebox"]["path"]
         self.sources = archive["sources"]
-        self.path = config["archivebox"]["path"]
-        self.archivebox_command = self.construct_archivebox_command(config, archive)
+        self.path = path
+        self.archivebox_command = self.build_archivebox_command(method, archive)
         self.identifier = (
             f"{timestamp}"
             if "schedule" not in archive
             else f"{archive['schedule']}-{timestamp}"
         )
 
-    def construct_archivebox_command(self, config, archive):
+    def build_archivebox_command(self, method, archive):
         default_command = f"archivebox add --depth={archive['depth']}"
-        if config["archivebox"]["method"] == "docker-compose":
+        if method == "docker-compose":
             return f"docker-compose run {default_command}"
-        elif config["archivebox"]["method"] == "python":
+        elif method == "python":
             return f"{default_command}"
         else:
-            raise ("Problem in construct_archivebox_command.")
+            raise ("Problem in build_archivebox_command.")
 
-    def construct_commands(self):
+    def build_commands(self):
         if "text_files" in self.sources:
             for i in self.sources["text_files"]:
                 yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo ${{line}}#{self.identifier}; done | {self.archivebox_command}'"

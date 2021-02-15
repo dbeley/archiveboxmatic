@@ -1,11 +1,13 @@
 import logging
 import subprocess
 import datetime
+from archiveboxmatic import ArchiveboxmaticArchive
 
 logger = logging.getLogger(__name__)
 
 
-def job(args, archive):
+def job(args, path, method, i):
+    archive = ArchiveboxmaticArchive(path, method, i)
     logger.info(f"###### Processing archive {archive.name}")
     for i in archive.construct_commands():
         logger.info(f"Raw command : {i}")
@@ -13,8 +15,9 @@ def job(args, archive):
             run_command(i)
 
 
-def job_monthly(args, archive):
+def job_monthly(args, path, method, i):
     if datetime.datetime.now().day == 1:
+        archive = ArchiveboxmaticArchive(path, method, i)
         logger.info(f"###### Processing archive {archive.name}")
         for i in archive.construct_commands():
             logger.info(f"Raw command : {i}")
@@ -22,8 +25,9 @@ def job_monthly(args, archive):
                 run_command(i)
 
 
-def job_yearly(args, archive):
+def job_yearly(args, path, method, i):
     if datetime.datetime.now().day == 1 and datetime.datetime.now().month == 1:
+        archive = ArchiveboxmaticArchive(path, method, i)
         logger.info(f"###### Processing archive {archive.name}")
         for i in archive.construct_commands():
             logger.info(f"Raw command : {i}")
