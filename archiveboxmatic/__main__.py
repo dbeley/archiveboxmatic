@@ -6,9 +6,9 @@ import argparse
 import schedule
 import datetime
 import time
+import threading
 from yaml import load, Loader
-from archiveboxmatic import ArchiveboxmaticArchive
-from job import job, job_monthly, job_yearly
+from .job import job, job_monthly, job_yearly
 
 logger = logging.getLogger()
 
@@ -41,38 +41,45 @@ def main():
         else ["daily", "weekly", "monthly", "yearly", "none"]
     )
 
-    path = config["archivebox"]["path"]
-    method = config["archivebox"]["method"]
-    for i in config["archives"]:
-        # WIP:
-        # archive objects are created here to activate every schedule
-        # they are instanciated a second time in the job functions
-        # in order to update the timestamp
-        archive = ArchiveboxmaticArchive(path, method, i)
+    global_config = config["archivebox"]
 
-        if archive.schedule in allowed_schedules:
-            if archive.schedule == "daily":
-                schedule.every().day.at("12:00").do(
-                    job, args=args, path=path, method=method, i=i
-                )
-            if archive.schedule == "weekly":
-                schedule.every().monday.at("10:00").do(
-                    job, args=args, path=path, method=method, i=i
-                )
-            if archive.schedule == "monthly":
-                schedule.every().day.at("05:00").do(
-                    job_monthly, args=args, path=path, method=method, i=i
-                )
-            if archive.schedule == "yearly":
-                schedule.every().day.at("01:00").do(
-                    job_yearly, args=args, path=path, method=method, i=i
-                )
-            if archive.schedule == "none":
-                job(args, path, method, i)
+    def run_threaded(job_func):
+        job_thread = threading.Thread(target=job_func)
+        job_thread.start()
+
+    logger.debug("parsing config file")
+    for i in config["archives"]:
+        if "schedule" in i:
+            if i["schedule"] in allowed_schedules:
+                if i["schedule"] == "daily":
+                    schedule.every().day.at("12:00").do(
+                        run_threaded, job, args=args, config=global_config, i=i
+                    )
+                if i["schedule"] == "daily":
+                    schedule.every().monday.at("10:00").do(
+                        run_threaded, job, args=args, config=global_config, i=i
+                    )
+                if i["schedule"] == "daily":
+                    schedule.every().day.at("05:00").do(
+                        run_threaded, job_monthly, args=args, config=global_config, i=i
+                    )
+                if i["schedule"] == "daily":
+                    schedule.every().day.at("01:00").do(
+                        run_threaded, job_yearly, args=args, config=global_config, i=i
+                    )
+                else:
+                    job(args, global_config, i)
+            else:
+                logger.warning(f"Schedule {i['schedule']} not allowed.")
+        elif "none" in allowed_schedules:
+            job(args, global_config, i)
+        else:
+            logger.warning("Schedule none not allowed.")
 
     while True:
+        logger.debug("boucle while")
         schedule.run_pending()
-        time.sleep(600)
+        time.sleep(2)
         logger.debug(f"Next job: {schedule.next_run() - datetime.datetime.now()}.")
 
 

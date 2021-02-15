@@ -5,19 +5,15 @@ logger = logging.getLogger(__name__)
 
 
 class ArchiveboxmaticArchive:
-    def __init__(self, path, method, archive):
-        timestamp = int(time.time())
+    def __init__(self, config, archive):
         self.name = archive["name"]
         self.is_schedule = True if "schedule" in archive else False
         self.schedule = archive["schedule"] if "schedule" in archive else "none"
-        self.environment = f"{' '.join(config['archivebox']['environment'])} bash -c '"
+        self.environment = f"{' '.join(config['environment'])} bash -c '"
         self.sources = archive["sources"]
-        self.path = path
-        self.archivebox_command = self.build_archivebox_command(method, archive)
-        self.identifier = (
-            f"{timestamp}"
-            if "schedule" not in archive
-            else f"{archive['schedule']}-{timestamp}"
+        self.path = config["path"]
+        self.archivebox_command = self.build_archivebox_command(
+            config["method"], archive
         )
 
     def build_archivebox_command(self, method, archive):
@@ -30,6 +26,10 @@ class ArchiveboxmaticArchive:
             raise ("Problem in build_archivebox_command.")
 
     def build_commands(self):
+        timestamp = int(time.time())
+        self.identifier = (
+            f"{timestamp}" if self.is_schedule else f"{self.schedule}-{timestamp}"
+        )
         if "text_files" in self.sources:
             for i in self.sources["text_files"]:
                 yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo ${{line}}#{self.identifier}; done | {self.archivebox_command}'"
