@@ -8,7 +8,7 @@ import datetime
 import time
 import threading
 from yaml import load, Loader
-from .job import job, job_monthly, job_yearly
+from job import job, job_monthly, job_yearly
 
 logger = logging.getLogger()
 
@@ -47,7 +47,6 @@ def main():
         job_thread = threading.Thread(target=job_func)
         job_thread.start()
 
-    logger.debug("parsing config file")
     for i in config["archives"]:
         if "schedule" in i:
             if i["schedule"] in allowed_schedules:
@@ -77,9 +76,8 @@ def main():
             logger.warning("Schedule none not allowed.")
 
     while True:
-        logger.debug("boucle while")
         schedule.run_pending()
-        time.sleep(2)
+        time.sleep(600)
         logger.debug(f"Next job: {schedule.next_run() - datetime.datetime.now()}.")
 
 
