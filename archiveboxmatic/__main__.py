@@ -54,15 +54,15 @@ def main():
                     schedule.every().day.at("12:00").do(
                         run_threaded, job, args=args, config=global_config, i=i
                     )
-                if i["schedule"] == "daily":
+                elif i["schedule"] == "weekly":
                     schedule.every().monday.at("10:00").do(
                         run_threaded, job, args=args, config=global_config, i=i
                     )
-                if i["schedule"] == "daily":
+                elif i["schedule"] == "monthly":
                     schedule.every().day.at("05:00").do(
                         run_threaded, job_monthly, args=args, config=global_config, i=i
                     )
-                if i["schedule"] == "daily":
+                elif i["schedule"] == "yearly":
                     schedule.every().day.at("01:00").do(
                         run_threaded, job_yearly, args=args, config=global_config, i=i
                     )
