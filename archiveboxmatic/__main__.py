@@ -43,8 +43,10 @@ def main():
 
     global_config = config["archivebox"]
 
-    def run_threaded(job_func):
-        job_thread = threading.Thread(target=job_func)
+    def run_threaded(job_func, args, global_config, archive_config):
+        job_thread = threading.Thread(
+            target=job_func, args=[args, global_config, archive_config]
+        )
         job_thread.start()
 
     for i in config["archives"]:
@@ -52,19 +54,35 @@ def main():
             if i["schedule"] in allowed_schedules:
                 if i["schedule"] == "daily":
                     schedule.every().day.at("12:00").do(
-                        run_threaded, job, args=args, config=global_config, i=i
+                        run_threaded,
+                        job,
+                        args=args,
+                        global_config=global_config,
+                        archive_config=i,
                     )
                 elif i["schedule"] == "weekly":
                     schedule.every().monday.at("10:00").do(
-                        run_threaded, job, args=args, config=global_config, i=i
+                        run_threaded,
+                        job,
+                        args=args,
+                        global_config=global_config,
+                        archive_config=i,
                     )
                 elif i["schedule"] == "monthly":
                     schedule.every().day.at("05:00").do(
-                        run_threaded, job_monthly, args=args, config=global_config, i=i
+                        run_threaded,
+                        job_monthly,
+                        args=args,
+                        global_config=global_config,
+                        archive_config=i,
                     )
                 elif i["schedule"] == "yearly":
                     schedule.every().day.at("01:00").do(
-                        run_threaded, job_yearly, args=args, config=global_config, i=i
+                        run_threaded,
+                        job_yearly,
+                        args=args,
+                        global_config=global_config,
+                        archive_config=i,
                     )
                 else:
                     job(args, global_config, i)
@@ -77,7 +95,7 @@ def main():
 
     while True:
         schedule.run_pending()
-        time.sleep(600)
+        time.sleep(60)
         logger.debug(f"Next job: {schedule.next_run() - datetime.datetime.now()}.")
 
 
