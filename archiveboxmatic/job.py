@@ -1,7 +1,7 @@
 import logging
 import subprocess
 import datetime
-from .archiveboxmatic import ArchiveboxmaticArchive
+from archiveboxmatic import ArchiveboxmaticArchive
 
 logger = logging.getLogger(__name__)
 
