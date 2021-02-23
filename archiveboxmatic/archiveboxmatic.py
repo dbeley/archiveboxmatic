@@ -28,11 +28,11 @@ class ArchiveboxmaticArchive:
     def build_commands(self):
         timestamp = int(time.time())
         self.identifier = (
-            f"{timestamp}" if self.is_schedule else f"{self.schedule}-{timestamp}"
+            f"{timestamp}" if not self.is_schedule else f"{self.schedule}-{timestamp}"
         )
         if "text_files" in self.sources:
             for i in self.sources["text_files"]:
-                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo ${{line}}#{self.identifier}; done | {self.archivebox_command}'"
+                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo $line#{self.identifier}; done | {self.archivebox_command}'"
         if "shaarli" in self.sources:
             # for i in self.sources["shaarli"]:
             logger.info("Shaarli not implemented yet.")
