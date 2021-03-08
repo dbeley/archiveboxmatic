@@ -1,6 +1,7 @@
 import logging
 import subprocess
 import datetime
+import time
 from archiveboxmatic import ArchiveboxmaticArchive
 
 logger = logging.getLogger(__name__)
@@ -43,3 +44,6 @@ def run_command(command):
         text=True,
     )
     output, error = process.communicate()
+    process.wait()
+    logger.debug(f"Command {command}: {process.returncode}.")
+    time.sleep(2)
