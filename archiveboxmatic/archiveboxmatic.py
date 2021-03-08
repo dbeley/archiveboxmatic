@@ -1,5 +1,6 @@
 import logging
 import time
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +33,10 @@ class ArchiveboxmaticArchive:
         )
         if "text_files" in self.sources:
             for i in self.sources["text_files"]:
-                yield f"{self.environment} cd {self.path} && cat {i} | while read line; do echo $line#{self.identifier}; done | {self.archivebox_command}'"
+                with open(os.path.expanduser(i)) as f:
+                    content = [x.strip() for x in f.readlines()]
+                for j in content:
+                    yield f'{self.environment} cd {self.path} && {self.archivebox_command} "{j}#{self.identifier}"'
         if "shaarli" in self.sources:
             # for i in self.sources["shaarli"]:
             logger.info("Shaarli not implemented yet.")
