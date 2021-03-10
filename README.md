@@ -22,20 +22,7 @@ pipenv install '-e .'
 
 ### ArchiveBox installation
 
-#### Classic install
-
-```
-pip install archivebox
-mkdir data
-cd data
-archivebox init
-archivebox manage createsuperuser
-cd ..
-```
-
-Use `python` method in your config file.
-
-#### Docker install
+#### Docker install (recommended)
 
 For an archivebox data folder named data and placed in the repo folder, create a file named `.env` containing this content
 ```
@@ -53,6 +40,19 @@ docker-compose up -d
 
 Use `docker-compose` method in your config file.
 
+#### Python install
+
+```
+pip install archivebox
+mkdir data
+cd data
+archivebox init
+archivebox manage createsuperuser
+cd ..
+```
+
+Use `python` method in your config file.
+
 ## Configuration
 
 See [`config.example.yaml`](https://github.com/dbeley/archiveboxmatic/blob/master/config.example.yaml) for a default config file. By default, archiveboxmatic will search for a config.yaml file in the directory from where it has been launched.
@@ -61,6 +61,7 @@ See [`config.example.yaml`](https://github.com/dbeley/archiveboxmatic/blob/maste
 
 ```
 usage: archiveboxmatic [-h] [--debug] [-c CONFIG_FILE] [-s SCHEDULE]
+                       [--dry-run]
 
 ArchiveBoxMatic: configure ArchiveBox with the simplicity of a yaml file.
 
@@ -73,11 +74,13 @@ optional arguments:
                         Only run scheduled tasks for a specific timeframe
                         (Choices: daily, weekly, monthly, yearly, all.
                         Default: all).
+  --dry-run             Run the script without starting the archive process.
+                        Can be used to validate the config file.
 ```
 
 ## Schedule
 
-archiveboxmatic comes with a systemd-service file which allows it to run in the background.
+You can automatically run archiveboxmatic with the provided systemd service file.
 
 You will have to change the WorkingDirectory option in the systemd file to the directory containing archiveboxmatic.
 
@@ -87,10 +90,3 @@ systemctl --user daemon-reload
 systemctl --user enable --now archiveboxmatic
 systemctl --user status archiveboxmatic
 ```
-
-By default the schedule are the following (you can change it in the code).
-
-- daily : every day at 12am
-- weekly : every monday at 10am
-- monthly : every first day of the month at 5am
-- yearly : every first day of the year at 1am
